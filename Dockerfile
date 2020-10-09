@@ -1,10 +1,10 @@
 FROM centos:7
-MAINTAINER jan@rancher.com
+
+ARG ALL_PROXY=http://192.168.10.88:1080
+ARG TINI_VERSION=v0.16.1
 
 # Install dependencies
-RUN yum install -y epel-release.noarch centos-release-gluster37.noarch && \
-    rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7 && \
-    rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-Storage && \
+RUN yum install -y epel-release.noarch centos-release-gluster41.noarch && \
     yum -y install \
     nfs-ganesha nfs-ganesha-xfs nfs-ganesha-vfs \
     nfs-utils rpcbind dbus && \
@@ -12,7 +12,6 @@ RUN yum install -y epel-release.noarch centos-release-gluster37.noarch && \
     yum -y clean all
 
 # Add Tini
-ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini.asc /tini.asc
 RUN set -x \
